@@ -9,6 +9,8 @@ void GenerateString(int n, char* string) {
     strncpy(string + place_of_copy, string + 0, pow(2,n-1) - 1);
     int place_of_letter = pow(2,n-1) - 1;
     string[place_of_letter] = 'a' + (n-1);
+    
+    // вывод на экран лучше перенести из ф-и generate в main 
     for (int i = 0; i < pow(2,n) - 1; ++i) {
         printf("%c", string[i]);
     }
@@ -23,6 +25,7 @@ int main()
     scanf("%d", &n_str);
     ar_str = (char*) malloc(mem_str * sizeof(char));
 
+    // можно memset использовать для инициализации массивов
     for (int i = 0; i < n_str; ++i)
     {
         ar_str[i] = 0;
