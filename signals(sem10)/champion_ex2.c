@@ -2,47 +2,36 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int process_s1;
+int process_type;
 
-void Signal1(int nsig) {
+void Signal1(int nsig) { //подаем номер сигнала
 		printf("РТ");
-		kill(process_s1, SIGUSR1);
+		sleep(1);
+		kill(process_type, SIGUSR2);//подаем сигнал завершения процессу process_type 
 
 }
 
 void Signal2(int nsig) {
 		printf("ЧЕМПИОН!\n");
-		int process = getppid();
-		kill(process, SIGUSR1);
+		sleep(1);
+		kill(process_type, SIGUSR1); //передаем в родительский
 }
 
+void Run() {
+	Signal1(0); //вызываем функцию от нулевого сигнала
+	while(1);
+}
 
-int main(void)
+int main()
 {
 	int pid;
 
-	//signal (SIGUSR1, Signal1);
-	//signal (SIGUSR2, Signal2);
-
-	pid = fork();
-	if (pid == -1) //error
-	{
-		printf("error\n");
-
-	} else if (pid == 0) //child
-	{
-		signal (SIGUSR2, Signal2);
-		while(1);
-
-	} else //parent
-	{
-		process_s1 = pid;
-		signal (SIGUSR1, Signal1);
-		while(1);
-	}
-
-
-
-	while(1);
+	signal (SIGUSR1, Signal1);//как реагировать на SIGUSR1 с помощью функции
+	signal (SIGUSR2, Signal2);
+	
+	proccess_type = getpid();//используем один главный процесс, по факту он сам себе подает сигналы
+	
+	Run();//функция циклится и процессы передают друг другу сигналы
+	
 	return 0;
 }
