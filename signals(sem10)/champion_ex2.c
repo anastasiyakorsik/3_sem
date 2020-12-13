@@ -5,7 +5,7 @@
 int process_type;
 
 void Signal1(int nsig) { //подаем номер сигнала
-		printf("РТ");
+		printf("РТ\n");
 		sleep(1);
 		kill(process_type, SIGUSR2);//подаем сигнал завершения процессу process_type 
 
